@@ -18,9 +18,9 @@ colnames(car_1)<- c("Name","Year_mfd","km_drv","fuel_type","seller_type","transm
 vehicle_dataset<-Car_2 %>%
   mutate(
     Owner = case_when(
-      Owner == "0" ~ "First owner",
+      Owner == "0" ~ "First Owner",
       Owner == "1" ~ "Second Owner",
-      Owner == "3" ~ "Fourth & above owner",
+      Owner == "3" ~ "Fourth & Above Owner",
       TRUE ~ as.character(Owner)
     )
   )
@@ -69,11 +69,11 @@ print(Car_4)
 vehicle_dataset_4<-Car_4 %>%
   mutate(
     Owner = case_when(
-      Owner == "First" ~ "First owner",
+      Owner == "First" ~ "First Owner",
       Owner == "Second" ~ "Second Owner",
-      Owner == "Third" ~ "Third owner",
-      Owner == "Fourth" ~ "Fourth & above owner",
-      Owner == "4 or More" ~ "Fourth & above owner",
+      Owner == "Third" ~ "Third Owner",
+      Owner == "Fourth" ~ "Fourth & Above Owner",
+      Owner == "4 or More" ~ "Fourth & Above Owner",
       TRUE ~ as.character(Owner)
     )
   )
@@ -92,4 +92,4 @@ colnames(Car_4)<- c("Name","Year_mfd","km_drv","fuel_type","seller_type","transm
 combined_cars <- rbind(car_1, Car_2, Car_3, Car_4)
 
 
-write.csv(combined_cars, "all_cars.csv") # Save to csv
+write.csv(combined_cars, "all_cars.csv", row.names = FALSE) # Save to csv
