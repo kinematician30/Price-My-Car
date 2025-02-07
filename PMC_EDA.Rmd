@@ -1,0 +1,82 @@
+# Price-My-Car Exploratory Data Analysis.
+
+> "You can have **data** without information, but you cannot have information without **data**." --- Daniel Keys Moran
+
+## Objectives
+
+## Libraries
+
+```{r}
+library(dplyr) # Data Manipulation
+library(ggplot2) # Data Visualization
+library(tidyr) # Data Tidying and Reshaping
+library(scales) # Scale Balancing
+```
+
+```{r}
+# Visualization Suuport
+options(scipen = 999)
+```
+
+## Data Collection
+
+```{r}
+all_cars <- readr::read_csv("all_cars.csv")
+```
+
+## Data Information
+
+### Data Size and Structure
+
+```{r}
+dim(all_cars)
+
+str(all_cars)
+```
+
+## Data Insights to generate
+
+These are the following insights we are going to generate:
+
+-   **Distribution of Number of Car Owners**
+
+-   **Average Selling Price by Car Owners.**
+
+-   **Distribution of Fuel Type.**
+
+-   **Average Selling Price by Fuel Type.**
+
+-   **Distribution of Price.**
+
+-   **Relationship between kilometer driven and Selling Price**
+
+### Distribution of Number of Previous Owners
+
+```{r}
+owner_dist <-  all_cars |> group_by(no_own) |> summarise(owner_count = n()) |> arrange(desc(owner_count))
+
+# color 
+colors <- colorRampPalette(c("#FFFF00", "#FF0000"))(nrow(owner_dist))
+
+barplot(owner_dist$owner_count, names.arg = owner_dist$no_own, main = "Distribution of Number of Previous  Owners", 
+        xlab = "Number of Owners", ylab = "Count",
+        col = colors)
+abline(h = mean(owner_dist$owner_count), lty = 3, lwd = 3)
+```
+
+### Average Selling Price by Car Owners
+
+```{r}
+owner_price <-  all_cars |> group_by(no_own) |> summarise(avg_price = mean(Selling_price)) |> arrange(desc(avg_price))
+
+# color
+colors_blyl <- colorRampPalette(c("#0000FF", "#ADD8E6"))(nrow(owner_price))
+options(scipen = 999)
+
+
+#plot
+barplot(owner_price$avg_price, names.arg = owner_price$no_own, main = "Distribution of prices by Number of Previous  Owners", 
+        xlab = "Number of Owners", ylab = "Price",
+        col = colors_blyl, ylim = c(0, max(owner_price$avg_price) * 1.1))
+abline(h = mean(owner_price$avg_price), lty = 3, lwd = 3)
+```
