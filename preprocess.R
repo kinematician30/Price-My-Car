@@ -85,7 +85,7 @@ Car_4 <- vehicle_dataset_4
 Car_4 <- Car_4[, c("Name","Year","Kilometer","Fuel Type","Seller Type","Transmission","Owner","Price")]
 
 #Rename the column
-colnames(Car_4)<- c("Name","Year_mfd","km_drv","fuel_type","seller_type","transmission","no_own","Selling_price","Present_Price")
+colnames(Car_4)<- c("Name","Year_mfd","km_drv","fuel_type","seller_type","transmission","no_own","Selling_price")
 
 
 # Combine data frames using r_bind
