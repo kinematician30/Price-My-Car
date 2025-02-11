@@ -80,3 +80,9 @@ barplot(owner_price$avg_price, names.arg = owner_price$no_own, main = "Distribut
         col = colors_blyl, ylim = c(0, max(owner_price$avg_price) * 1.1))
 abline(h = mean(owner_price$avg_price), lty = 3, lwd = 3)
 ```
+
+### Distribution of Fuel Type
+
+```{r}
+
+```
