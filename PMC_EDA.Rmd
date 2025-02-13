@@ -11,6 +11,7 @@ library(dplyr) # Data Manipulation
 library(ggplot2) # Data Visualization
 library(tidyr) # Data Tidying and Reshaping
 library(scales) # Scale Balancing
+library(ggcorrplot)
 ```
 
 ```{r}
@@ -116,7 +117,28 @@ ggplot(all_cars, aes(x = Selling_price)) +
 # Selling Price vs. Year Manufactured (by Fuel Type
 ggplot(all_cars, aes(x = Year_mfd, y = Selling_price, color = fuel_type)) +
   geom_point(alpha = 1.5) +  # Alpha for overlapping points
+  geom_hline(yintercept = c(10000000, 20000000, 30000000)) +
   labs(title = "Selling Price vs. Year Manufactured (by Fuel Type)", x = "Year Manufactured", y = "Selling Price") +
+  theme_bw()
+```
+
+### Price Distribution by Fuel Type
+
+```{r}
+ggplot(all_cars, aes(x = Year_mfd, y = Selling_price)) +
+  geom_boxplot(fill = "orange", color = "black") +
+  labs(title = "Selling Price by Year Manufactured", x = "Year Manfactured", y = "Selling Price") +
+  theme_bw()
+```
+
+### Relationship Between Selling Price and  Year Mfd by No of Owners
+
+```{r}
+# Selling Price vs. Year Manufactured (by Fuel Type
+ggplot(all_cars, aes(x = Year_mfd, y = Selling_price, color = no_own)) +
+  geom_point(alpha = 1.5) +  # Alpha for overlapping points
+  geom_hline(yintercept = c(10000000, 20000000, 30000000)) +
+  labs(title = "Selling Price vs. Year Manufactured (by Number of Fuel Type)", x = "Year Manufactured", y = "Selling Price") +
   theme_bw()
 ```
 
@@ -127,4 +149,12 @@ ggplot(all_cars, aes(x = km_drv, y = Selling_price)) +
   geom_point(alpha = 0.5, color = "blue") +  # Alpha for overlapping points
   labs(title = "Selling Price vs. Kilometer Driven", x = "Kilometer Driven", y = "Selling Price") +
   theme_bw()
+```
+
+### Heatmap
+
+```{r}
+cor_matrix <- cor(all_cars[, c("Year_mfd", "km_drv", "Selling_price")]) # Select numerical cols
+
+ggcorrplot(cor_matrix, method = "square", digits = 2, lab = TRUE)
 ```
