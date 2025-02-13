@@ -26,7 +26,7 @@ all_cars <- readr::read_csv("all_cars.csv")
 
 ## Data Information
 
-### Data Size and2]]v Structure
+### Data Size and Structure
 
 ```{r}
 dim(all_cars)
@@ -84,5 +84,47 @@ abline(h = mean(owner_price$avg_price), lty = 3, lwd = 3)
 ### Distribution of Fuel Type
 
 ```{r}
+ggplot(all_cars, aes(x = fuel_type)) +
+  geom_bar(fill = "lightgreen", color = "black") +
+  labs(title = "Frequency of Fuel Types", x = "Fuel Type", y = "Count") +
+  theme_bw()
+```
 
+### Average Price by Fuel Type
+
+```{r}
+fuel_price <- all_cars |> group_by(fuel_type) |> summarise(
+  average_price = round(mean(Selling_price), 0)
+) |>  arrange(desc(average_price))
+
+ggplot(data = fuel_price, aes(x = reorder(fuel_type, -average_price), y = average_price, fill = fuel_type)) +
+  geom_bar(stat = 'identity', fill = "lightgreen", color = "black") + labs(title = "Average Prices of Cars by Fuel Type", y = "Average Price", x = "Fuel Type")
+```
+
+### Price Distribution
+
+```{r}
+ggplot(all_cars, aes(x = Selling_price)) +
+  geom_histogram(bins = 45, fill = "lightgreen", color = "black") +
+  geom_vline(xintercept = mean(all_cars$Selling_price), linetype = "dashed", color = "red", linewidth = 1) + 
+  geom_vline(xintercept = median(all_cars$Selling_price), linetype = "dashed", color = "blue", linewidth = 1) +
+  labs(title = "Distribution of Selling Price", x = "Selling Price", y = "Frequency") +
+  theme_bw()
+```
+
+```{r}
+# Selling Price vs. Year Manufactured (by Fuel Type
+ggplot(all_cars, aes(x = Year_mfd, y = Selling_price, color = fuel_type)) +
+  geom_point(alpha = 1.5) +  # Alpha for overlapping points
+  labs(title = "Selling Price vs. Year Manufactured (by Fuel Type)", x = "Year Manufactured", y = "Selling Price") +
+  theme_bw()
+```
+
+### Relationship Between Kilometer Driven and Price
+
+```{r}
+ggplot(all_cars, aes(x = km_drv, y = Selling_price)) +
+  geom_point(alpha = 0.5, color = "blue") +  # Alpha for overlapping points
+  labs(title = "Selling Price vs. Kilometer Driven", x = "Kilometer Driven", y = "Selling Price") +
+  theme_bw()
 ```
