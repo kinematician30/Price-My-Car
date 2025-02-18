@@ -131,7 +131,7 @@ ggplot(all_cars, aes(x = Year_mfd, y = Selling_price)) +
   theme_bw()
 ```
 
-### Relationship Between Selling Price and  Year Mfd by No of Owners
+### Relationship Between Selling Price and Year Mfd by No of Owners
 
 ```{r}
 # Selling Price vs. Year Manufactured (by Fuel Type
