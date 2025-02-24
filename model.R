@@ -78,7 +78,14 @@ linear_predictions <- predict(linear_model, newdata = test_data)
 rf_predictions <- predict(rf_model, newdata = test_data)
 xgb_predictions <- predict(xgb_model, newdata = test_matrix)
 
-# Evaluation metrics
+# Evaluation metrics: Function calculate Roor mean squared value
 calculate_rmse <- function(actual, predicted) {
-  sqrt(mean((actual - predicted)^2, na.rm = TRUE)) #Added na.rm = TRUE
-}
+  sqrt(mean((actual - predicted)^2, na.rm = TRUE))}
+
+linear_rmse <- calculate_rmse(test_data$Selling_price, linear_predictions)
+rf_rmse <- calculate_rmse(test_data$Selling_price, rf_predictions)
+xgb_rmse <- calculate_rmse(test_data$Selling_price, xgb_predictions)
+
+cat("Linear Regression RMSE:", linear_rmse, "\n")
+cat("Random Forest RMSE:", rf_rmse, "\n")
+cat("XGBoost RMSE:", xgb_rmse, "\n")
