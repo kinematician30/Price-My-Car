@@ -57,3 +57,28 @@ train_idx <- sample(1:n , 0.7 * n)
 # split into train and test data
 train_data <- all_cars[train_idx, ]
 test_data <- all_cars[-train_idx, ]
+
+# Model Building: for building this model we are going to be considering three model algorithms[Logistic Regression, Random Forest, Extreme Gradient Boosting].
+# Linear Regression
+linear_model <- lm(Selling_price ~ ., data = train_data)
+summary(linear_model)
+
+# Random Forest
+rf_model <- randomForest(Selling_price ~ ., data = train_data, ntree = 100, importance=TRUE)
+print(rf_model)
+
+# Extreme Gradient Boosting
+train_matrix <- model.matrix(Selling_price ~ .-1, data = train_data)
+test_matrix <- model.matrix(Selling_price ~ .-1, data = test_data)
+
+xgb_model <- xgboost(data = train_matrix, label = train_data$Selling_price, nrounds = 100, objective = "reg:squarederror")
+
+# Nodel Evaluation
+linear_predictions <- predict(linear_model, newdata = test_data)
+rf_predictions <- predict(rf_model, newdata = test_data)
+xgb_predictions <- predict(xgb_model, newdata = test_matrix)
+
+# Evaluation metrics
+calculate_rmse <- function(actual, predicted) {
+  sqrt(mean((actual - predicted)^2, na.rm = TRUE)) #Added na.rm = TRUE
+}
