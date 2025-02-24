@@ -78,7 +78,7 @@ linear_predictions <- predict(linear_model, newdata = test_data)
 rf_predictions <- predict(rf_model, newdata = test_data)
 xgb_predictions <- predict(xgb_model, newdata = test_matrix)
 
-# Evaluation metrics: Function calculate Roor mean squared value
+# Evaluation metrics: Function calculate Root Mean Squared Value
 calculate_rmse <- function(actual, predicted) {
   sqrt(mean((actual - predicted)^2, na.rm = TRUE))}
 
@@ -89,3 +89,23 @@ xgb_rmse <- calculate_rmse(test_data$Selling_price, xgb_predictions)
 cat("Linear Regression RMSE:", linear_rmse, "\n")
 cat("Random Forest RMSE:", rf_rmse, "\n")
 cat("XGBoost RMSE:", xgb_rmse, "\n")
+
+# Plotting predicted vs. actual values (example for Random Forest)
+plot(test_data$Selling_price, rf_predictions, 
+     xlab = "Actual Selling Price", ylab = "Predicted Selling Price",
+     main = "Actual vs. Predicted (Random Forest)", col="blue", pch=16)
+abline(0, 1, col = "red")
+
+# Further Evaluation: Example - Feature Importance for Random Forest
+importance(rf_model)
+varImpPlot(rf_model)
+
+# Compare model performance visually 
+rmse_df <- data.frame(
+  Model = c("Linear Regression", "Random Forest", "XGBoost"),
+  RMSE = c(linear_rmse, rf_rmse, xgb_rmse)
+)
+
+ggplot(rmse_df, aes(x = Model, y = RMSE)) +
+  geom_col(fill = "skyblue", color = "black") +
+  labs(title = "RMSE Comparison", x = "Model", y = "RMSE") + theme_bw()
