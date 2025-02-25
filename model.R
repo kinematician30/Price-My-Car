@@ -16,6 +16,7 @@ all_cars$transmission <- as.factor(all_cars$transmission)
 all_cars$no_own <- as.factor(all_cars$no_own)
 
 all_cars$car_age <- 2025 - all_cars$Year_mfd # car age instead of year manufactured
+all_cars$Year_mfd <- NULL
 
 # Feature Selection
 # Correlation for Numerical
@@ -53,7 +54,7 @@ print(names(all_cars_selected))
 # Now Splitting the data.
 set.seed(300) # For Reproducibility
 n <- nrow(all_cars)
-train_idx <- sample(1:n , 0.7 * n)
+train_idx <- sample(1:n , size = 0.7 * n) # While splitting we intend use 70% of our dataset to train hence the size
 # split into train and test data
 train_data <- all_cars[train_idx, ]
 test_data <- all_cars[-train_idx, ]
