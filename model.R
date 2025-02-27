@@ -9,7 +9,7 @@ library(ggcorrplot)
 all_cars <- readr::read_csv('all_cars.csv')
 
 # Feature Engineering
-# Convert categorical variables to factors
+# Convert categorical variables to factors exclude the car names
 all_cars$fuel_type <- as.factor(all_cars$fuel_type)
 all_cars$seller_type <- as.factor(all_cars$seller_type)
 all_cars$transmission <- as.factor(all_cars$transmission)
@@ -72,7 +72,7 @@ print(rf_model)
 train_matrix <- model.matrix(Selling_price ~ .-1, data = train_data)
 test_matrix <- model.matrix(Selling_price ~ .-1, data = test_data)
 
-xgb_model <- xgboost(data = train_matrix, label = train_data$Selling_price, nrounds = 100, objective = "reg:squarederror")
+xgb_model <- xgboost(data = train_matrix, label = train_data$Selling_price, nrounds = 50, objective = "reg:squarederror")
 
 # Nodel Evaluation
 linear_predictions <- predict(linear_model, newdata = test_data)
@@ -110,3 +110,22 @@ rmse_df <- data.frame(
 ggplot(rmse_df, aes(x = Model, y = RMSE)) +
   geom_col(fill = "skyblue", color = "black") +
   labs(title = "RMSE Comparison", x = "Model", y = "RMSE") + theme_bw()
+
+
+# Let's test with random rows
+set.seed(200)
+rdm_rows <- all_cars[sample(nrow(all_cars), size = 15), ]
+
+rf_predictions <- predict(rf_model, newdata = rdm_rows)
+linear_predictions <- predict(linear_model, newdata = random_rows)
+
+# Create a data frame for easy comparison
+predictions_df <- data.frame(
+  Actual = rdm_rows$Selling_price,
+  RandomForest = rf_predictions
+)
+
+# Print the predictions
+print(predictions_df)
+
+# This is temporary, only the random forest model is working update coming soon.
