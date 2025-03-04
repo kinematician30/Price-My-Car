@@ -74,11 +74,7 @@ rf_model <- randomForest(Selling_price ~ ., data = train_data, ntree = 100, impo
 train_matrix <- model.matrix(Selling_price ~ .-1, data = train_data)
 test_matrix <- model.matrix(Selling_price ~ .-1, data = test_data)
 
-tmx_col <- colnames(train_matrix)
-test_matrix <- test_matrix[, tmx_col]
-
-xgb_model <- xgboost(data = train_matrix, label = train_data$Selling_price, 
-                     nrounds = 50, objective = "reg:squarederror")
+xgb_model <- xgboost(data = train_matrix, label = train_data$Selling_price, nrounds = 100, objective = "reg:squarederror")
 
 # Nodel Evaluation
 linear_predictions <- predict(linear_model, newdata = test_data, level = all_levels)
@@ -135,3 +131,8 @@ predictions_df <- data.frame(
 print(predictions_df)
 
 # This is temporary, only the random forest model is working update coming soon.
+
+# Saving the model for use in deployments
+saveRDS(linear_model, file = "models/linear_model.rds")
+saveRDS(rf_model, file = "models/rf_models.rds")
+saveRDS(xgb_model, file = "models/xgb_model.rds")
