@@ -18,6 +18,9 @@ all_cars$no_own <- as.factor(all_cars$no_own)
 all_cars$car_age <- 2025 - all_cars$Year_mfd # car age instead of year manufactured
 all_cars$Year_mfd <- NULL
 
+all_levels <- unique(all_cars$Name) 
+levels(all_cars$Name) <- all_levels 
+
 # Feature Selection
 # Correlation for Numerical
 numeric_cols <- names(all_cars)[sapply(all_cars, is.numeric)]
@@ -62,22 +65,25 @@ test_data <- all_cars[-train_idx, ]
 # Model Building: for building this model we are going to be considering three model algorithms[Logistic Regression, Random Forest, Extreme Gradient Boosting].
 # Linear Regression
 linear_model <- lm(Selling_price ~ ., data = train_data)
-summary(linear_model)
+# summary(linear_model)
 
 # Random Forest
 rf_model <- randomForest(Selling_price ~ ., data = train_data, ntree = 100, importance=TRUE)
-print(rf_model)
 
 # Extreme Gradient Boosting
 train_matrix <- model.matrix(Selling_price ~ .-1, data = train_data)
 test_matrix <- model.matrix(Selling_price ~ .-1, data = test_data)
 
-xgb_model <- xgboost(data = train_matrix, label = train_data$Selling_price, nrounds = 50, objective = "reg:squarederror")
+tmx_col <- colnames(train_matrix)
+test_matrix <- test_matrix[, tmx_col]
+
+xgb_model <- xgboost(data = train_matrix, label = train_data$Selling_price, 
+                     nrounds = 50, objective = "reg:squarederror")
 
 # Nodel Evaluation
-linear_predictions <- predict(linear_model, newdata = test_data)
+linear_predictions <- predict(linear_model, newdata = test_data, level = all_levels)
 rf_predictions <- predict(rf_model, newdata = test_data)
-xgb_predictions <- predict(xgb_model, newdata = test_matrix)
+xgb_predictions <- predict(xgb_model, newdata = test_matrix, level = all_levels)
 
 # Evaluation metrics: Function calculate Root Mean Squared Value
 calculate_rmse <- function(actual, predicted) {
