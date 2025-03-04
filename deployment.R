@@ -55,5 +55,5 @@ function(Year_mfd, km_drv, fuel_type, seller_type, transmission, no_own) {
 }
 
 # --- Run the API ---
-pr("plumber.R") %>%  # Replace with the actual path to your R script if needed
-  pr_run(port = 8000)  # You can change the port number
+pr("deployment.R") %>%  
+  pr_run(port = 8080)  # You can change the port number
